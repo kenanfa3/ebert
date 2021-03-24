@@ -13,7 +13,7 @@ from embeddings import MappedEmbedding, load_embedding
 from mappers import load_mapper
 
 from kb.wiki_linking_util import WikiCandidateMentionGenerator
-from tqdm import tqdm, trange
+from tqdm.auto import tqdm, trange
 from torch.autograd import Variable
 import re
 import argparse
@@ -189,7 +189,8 @@ class EntityLinkingAsLM:
         
         null_vector = self.rnd.uniform(low = -self.model.config.initializer_range, high = self.model.config.initializer_range, size = (self.model.config.hidden_size,))
         self.null_vector = Variable(torch.tensor(null_vector).to(dtype = torch.float, device = self.device), requires_grad = True)
-        self.candidate_generator = WikiCandidateMentionGenerator(entity_world_path = None, max_candidates = max_candidates) 
+#         self.candidate_generator = WikiCandidateMentionGenerator(entity_world_path = None, max_candidates = max_candidates) 
+        self.candidate_generator = WikiCandidateMentionGenerator(entity_world_path = None)
         
         if self.do_use_priors:
             self.null_bias = Variable(torch.zeros((1,)).to(dtype = torch.float, device = self.device), requires_grad = True)
